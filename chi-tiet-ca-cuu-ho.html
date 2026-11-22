@@ -1,0 +1,55 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi tiết ca cứu hộ</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="rescue">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <a href="cuu-ho.html">Cứu hộ</a> / Chi tiết ca cứu hộ</div>
+      <div id="content"></div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    const id = qs("id");
+    const c = RESCUE_CASES.find(x => x.id === id) || RESCUE_CASES[0];
+    document.getElementById("content").innerHTML = `
+      <div class="detail-layout">
+        <div class="detail-gallery">
+          <div class="detail-gallery-main"><img src="${c.img}" alt="${c.species} cần hỗ trợ"></div>
+        </div>
+        <div class="detail-info">
+          <div class="browse-card-meta" style="margin-bottom:16px;">${levelBadge(c.level)} ${statusBadge(c.status)}</div>
+          <h2>${c.species} cần hỗ trợ</h2>
+          <div class="detail-info-row"><strong>Khu vực</strong><span>${c.area}</span></div>
+          <div class="detail-info-row"><strong>Loài</strong><span>${c.species}</span></div>
+          <div class="detail-info-row"><strong>Hỗ trợ cần</strong><span>${c.need}</span></div>
+          <div class="detail-info-row" style="border:none;"><strong>Mô tả</strong><span>${c.desc}</span></div>
+          <div class="alert alert-warning" style="margin-top:20px;">Thông tin do người phát hiện cung cấp. Không tự ý tiếp cận nếu chưa có hướng dẫn an toàn.</div>
+          <div class="flex gap-12" style="margin-top:20px;">
+            <a href="tinh-nguyen.html" class="btn btn-primary" style="flex:1;">Hỗ trợ ca này</a>
+            <a href="huong-dan.html" class="btn btn-outline" style="flex:1;">Hướng dẫn an toàn</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:40px; padding-top:32px; border-top:1px solid var(--color-border);">
+        <h3>Tiến độ ca cứu hộ</h3>
+        <div class="timeline mt-16">
+          <div class="t-item done"><h4>Ghi nhận ban đầu</h4><p class="muted mb-0" style="font-size:13.5px;">Người dân báo tin qua form.</p></div>
+          <div class="t-item current"><h4>${STATUS_LABEL[c.status].text}</h4><p class="muted mb-0" style="font-size:13.5px;">Trạng thái hiện tại.</p></div>
+        </div>
+      </div>
+    `;
+   })();
+  </script>
+</body>
+
+

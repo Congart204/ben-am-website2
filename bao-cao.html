@@ -1,0 +1,66 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BÃ¡o cÃ¡o thÃ´ng tin</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container" style="max-width:640px;">
+      <div class="breadcrumb"><a href="index.html">Trang chá»§</a> / BÃ¡o cÃ¡o thÃ´ng tin</div>
+      <h1 style="font-size:30px;">BÃ¡o cÃ¡o thÃ´ng tin</h1>
+      <p class="muted mb-24">Cho chÃºng tÃ´i biáº¿t náº¿u báº¡n phÃ¡t hiá»‡n thÃ´ng tin sai, há»“ sÆ¡ Ä‘Ã£ háº¿t hiá»‡u lá»±c hoáº·c ná»™i dung khÃ´ng phÃ¹ há»£p.</p>
+
+      <form class="panel" id="reportForm">
+        <div class="field">
+          <label>Loáº¡i ná»™i dung cáº§n bÃ¡o cÃ¡o *</label>
+          <select name="target" required>
+            <option value="">-- Chá»n --</option>
+            <option>Há»“ sÆ¡ thÃº cÆ°ng</option>
+            <option>Ca cá»©u há»™</option>
+            <option>PhÃ²ng khÃ¡m</option>
+            <option>NÆ¡i giá»¯ táº¡m</option>
+            <option>KhÃ¡c</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>ÄÆ°á»ng dáº«n hoáº·c mÃ£ liÃªn quan</label>
+          <input type="text" name="ref" placeholder="VÃ­ dá»¥: p1, CH-AB12CD, tÃªn phÃ²ng khÃ¡m...">
+        </div>
+        <div class="field">
+          <label>LÃ½ do bÃ¡o cÃ¡o *</label>
+          <select name="reason" required>
+            <option value="">-- Chá»n --</option>
+            <option>ThÃ´ng tin sai</option>
+            <option>Há»“ sÆ¡ Ä‘Ã£ háº¿t hiá»‡u lá»±c</option>
+            <option>Ná»™i dung khÃ´ng phÃ¹ há»£p</option>
+            <option>TrÆ°á»ng há»£p cáº§n cáº­p nháº­t</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>MÃ´ táº£ chi tiáº¿t *</label>
+          <textarea name="detail" required></textarea>
+        </div>
+        <div class="field">
+          <label>Email hoáº·c sá»‘ Ä‘iá»‡n thoáº¡i cá»§a báº¡n (náº¿u cáº§n liÃªn há»‡ láº¡i)</label>
+          <input type="text" name="contact">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Gá»­i bÃ¡o cÃ¡o</button>
+      </form>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+    document.getElementById("reportForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      alert("Cáº£m Æ¡n báº¡n Ä‘Ã£ bÃ¡o cÃ¡o. Äá»™i ngÅ© Báº¾N áº¤M sáº½ kiá»ƒm tra láº¡i thÃ´ng tin sá»›m nháº¥t.");
+      e.target.reset();
+    });
+  </script>
+</body>
+
+
+

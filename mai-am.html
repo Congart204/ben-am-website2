@@ -1,0 +1,116 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tìm mái ấm — Danh sách thú cần nhận nuôi</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="adopt">
+  <div id="site-header"></div>
+  <section class="section" style="padding-bottom:20px;">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / Tìm mái ấm</div>
+      <div class="section-head">
+        <span class="eyebrow">Tìm mái ấm</span>
+        <h1 style="font-size:36px;">Tìm người bạn đồng hành mới</h1>
+        <p class="muted">Duyệt hồ sơ các bé chó mèo đang chờ mái ấm. Mỗi hồ sơ đều có thông tin sức khỏe và điều kiện nhận nuôi rõ ràng.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-filter="all">📌 Tất cả</button>
+        <button class="filter-tab" data-filter="recent">🆕 Mới cập nhật</button>
+        <button class="filter-tab" data-filter="special">❤️ Cần chăm sóc đặc biệt</button>
+        <button class="filter-tab" data-filter="urgent">⚡ Cần nhà gấp</button>
+      </div>
+      <div class="layout-with-sidebar">
+        <!-- Sidebar Filters -->
+        <div class="sidebar">
+          <h4>🔍 Lọc tìm kiếm</h4>
+          <div class="field"><label>Khu vực</label><select id="fArea"><option value="">Tất cả</option><option>TP.HCM</option><option>Hà Nội</option><option>Đà Nẵng</option></select></div>
+          <div class="field"><label>Loài</label><select id="fSpecies"><option value="">Tất cả</option><option>Chó</option><option>Mèo</option></select></div>
+          <div class="field"><label>Độ tuổi</label><select id="fAge"><option value="">Tất cả</option><option value="young">Dưới 1 tuổi</option><option value="adult">Trên 1 tuổi</option></select></div>
+          <div class="field"><label>Giới tính</label><select id="fGender"><option value="">Tất cả</option><option>Đực</option><option>Cái</option></select></div>
+          <div class="field"><label>Kích thước</label><select id="fSize"><option value="">Tất cả</option><option>Nhỏ</option><option>Vừa</option><option>Lớn</option></select></div>
+          <button class="btn btn-primary" id="applyFilter" style="width:100%;">Lọc</button>
+          <button class="btn btn-outline" id="clearFilter" style="width:100%; margin-top:8px;">Xóa bộ lọc</button>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="flex-between mb-24" style="gap:16px; flex-wrap:wrap;">
+            <span class="muted" id="resultCount"></span>
+            <select id="sortBy"><option value="updated">Mới cập nhật nhất</option><option value="name">Tên A–Z</option></select>
+          </div>
+          <div class="browse-grid" id="petList"></div>
+          <div class="empty-state" id="emptyState" style="display:none; text-align:center; padding:40px;">
+            <div class="icon" style="font-size:48px; margin-bottom:16px;">🐾</div>
+            <h3>Không có thú nào phù hợp</h3>
+            <p class="muted">Thử điều chỉnh lại tiêu chí tìm kiếm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    const params = new URLSearchParams(location.search);
+    if (params.get("area")) document.getElementById("fArea").value = "";
+    if (params.get("species")) document.getElementById("fSpecies").value = params.get("species");
+
+    function render() {
+      const area = document.getElementById("fArea").value;
+      const species = document.getElementById("fSpecies").value;
+      const age = document.getElementById("fAge").value;
+      const gender = document.getElementById("fGender").value;
+      const size = document.getElementById("fSize").value;
+      const sort = document.getElementById("sortBy").value;
+
+      let list = PETS.filter(p => p.status !== "adopted").filter(p =>
+        (!area || p.area.includes(area)) &&
+        (!species || p.species === species) &&
+        (!gender || p.gender === gender) &&
+        (!size || p.size === size) &&
+        (!age || (age === "young" ? /tháng/.test(p.age) : /năm|tuổi/.test(p.age) && !/tháng/.test(p.age)))
+      );
+      if (sort === "name") list = [...list].sort((a,b) => a.name.localeCompare(b.name));
+      else list = [...list].sort((a,b) => b.updated.localeCompare(a.updated));
+
+      document.getElementById("resultCount").textContent = list.length + " hồ sơ";
+      document.getElementById("petList").innerHTML = list.map(p => `
+        <div class="browse-card">
+          <img src="${p.img}" alt="${p.name}" class="browse-card-img">
+          <div class="browse-card-body">
+            <div class="browse-card-meta"><span>${p.species}</span> · <span>${p.age}</span> · <span>${p.gender}</span> · <span>${p.area}</span></div>
+            <h3>${p.name}</h3>
+            <div class="browse-card-footer">
+              <a href="chi-tiet-thu.html?id=${p.id}" class="btn btn-primary btn-sm" style="flex:1;">Xem hồ sơ</a>
+              <button onclick="alert('Đã lưu ❤️')" class="icon-btn-sm" style="border-radius:50%; width:36px; height:36px;">❤️</button>
+            </div>
+          </div>
+        </div>`).join("");
+      document.getElementById("emptyState").style.display = list.length ? "none" : "block";
+    }
+    document.getElementById("applyFilter").addEventListener("click", render);
+    document.getElementById("sortBy").addEventListener("change", render);
+    document.getElementById("clearFilter").addEventListener("click", () => {
+      document.getElementById("fArea").value = "";
+      document.getElementById("fSpecies").value = "";
+      document.getElementById("fAge").value = "";
+      document.getElementById("fGender").value = "";
+      document.getElementById("fSize").value = "";
+      render();
+    });
+    render();
+   })();
+  </script>
+</body>
+
+

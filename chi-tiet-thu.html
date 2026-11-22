@@ -1,0 +1,51 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi tiết hồ sơ thú</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="adopt">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <a href="mai-am.html">Tìm mái ấm</a> / Chi tiết hồ sơ</div>
+      <div id="content"></div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    const id = qs("id");
+    const p = PETS.find(x => x.id === id) || PETS[0];
+    document.getElementById("content").innerHTML = `
+      <div class="detail-layout">
+        <div class="detail-gallery">
+          <div class="detail-gallery-main"><img src="${p.img}" alt="${p.name}"></div>
+        </div>
+        <div class="detail-info">
+          <div class="browse-card-meta" style="margin-bottom:16px;">${statusBadge(p.status)} · <span>${p.species}</span> · <span>${p.breed}</span></div>
+          <h2>${p.name}</h2>
+          <div class="detail-info-row"><strong>Tuổi ước tính</strong><span>${p.age}</span></div>
+          <div class="detail-info-row"><strong>Giới tính</strong><span>${p.gender}</span></div>
+          <div class="detail-info-row"><strong>Kích thước</strong><span>${p.size}</span></div>
+          <div class="detail-info-row"><strong>Khu vực</strong><span>${p.area}</span></div>
+          <div class="detail-info-row"><strong>Tính cách</strong><span>${p.personality}</span></div>
+          <div class="detail-info-row"><strong>Sức khỏe</strong><span>${p.health}</span></div>
+          <div class="detail-info-row"><strong>Đơn vị phụ trách</strong><span>${p.org}</span></div>
+          <div class="detail-info-row" style="border:none; padding-bottom:0;"><strong>Cập nhật</strong><span>${p.updated}</span></div>
+          <div class="alert alert-info" style="margin-top:20px; margin-bottom:20px;">Thông tin sức khỏe được cung cấp bởi đơn vị phụ trách. BẾN ẤM không tự chẩn đoán.</div>
+          ${p.status === "ready"
+            ? `<a href="yeu-cau-nhan-nuoi.html?id=${p.id}" class="btn btn-secondary btn-block">🏠 Gửi yêu cầu nhận nuôi</a>`
+            : `<button class="btn btn-outline btn-block" disabled>Hiện chưa nhận yêu cầu</button>`}
+        </div>
+      </div>
+    `;
+   })();
+  </script>
+</body>
+
+

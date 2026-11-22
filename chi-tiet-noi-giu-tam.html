@@ -1,0 +1,45 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi tiết nơi giữ tạm</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="foster">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <a href="noi-giu-tam.html">Nơi giữ tạm</a> / Chi tiết</div>
+      <div id="content"></div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    const f = FOSTERS.find(x => x.id === qs("id")) || FOSTERS[0];
+    document.getElementById("content").innerHTML = `
+      <div class="detail-layout">
+        <div class="detail-gallery">
+          <div class="detail-gallery-main"><img src="${f.img}" alt="${f.name}"></div>
+        </div>
+        <div class="detail-info">
+          <div class="browse-card-meta" style="margin-bottom:16px;">${f.status==='available'?'✅ Còn nhận':'❌ Đã đầy'} · ${f.area}</div>
+          <h2>${f.name}</h2>
+          <div class="detail-info-row"><strong>Loại thú</strong><span>${f.accepts.join(", ")}</span></div>
+          <div class="detail-info-row"><strong>Sức chứa</strong><span>${f.capacity}</span></div>
+          <div class="detail-info-row"><strong>Thời gian</strong><span>${f.duration}</span></div>
+          <div class="detail-info-row"><strong>Chi phí</strong><span>${f.cost}</span></div>
+          <div class="detail-info-row" style="border:none;"><strong>Điều kiện</strong><span style="max-height:200px; overflow-y:auto;">${f.condition}</span></div>
+          ${f.status === 'available'
+            ? `<a href="form-cuu-ho.html" class="btn btn-primary btn-block" style="margin-top:20px;">Gửi yêu cầu</a>`
+            : `<button class="btn btn-outline btn-block" disabled style="margin-top:20px;">Đã đầy chỗ</button>`}
+        </div>
+      </div>`;
+   })();
+  </script>
+</body>
+
+

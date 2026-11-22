@@ -1,0 +1,45 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chi tiết phòng khám</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="clinic">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chủ</a> / <a href="phong-kham.html">Phòng khám</a> / Chi tiết</div>
+      <div id="content"></div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    const c = CLINICS.find(x => x.id === qs("id")) || CLINICS[0];
+    document.getElementById("content").innerHTML = `
+      <div class="detail-layout">
+        <div class="detail-gallery">
+          <div class="detail-gallery-main"><img src="${c.img}" alt="${c.name}"></div>
+        </div>
+        <div class="detail-info">
+          <div class="browse-card-meta" style="margin-bottom:16px;">${c.emergency ? '⚡ Cấp cứu 24/7 · ' : ''}${c.area}</div>
+          <h2>${c.name}</h2>
+          <div class="detail-info-row"><strong>Địa chỉ</strong><span>${c.address}</span></div>
+          <div class="detail-info-row"><strong>Giờ hoạt động</strong><span>${c.hours}</span></div>
+          <div class="detail-info-row"><strong>Hotline</strong><span>${c.hotline}</span></div>
+          <div class="detail-info-row" style="border:none;"><strong>Dịch vụ</strong><span>${c.services.join(", ")}</span></div>
+          <div class="flex gap-12" style="margin-top:20px;">
+            <a href="tel:${c.hotline.replace(/\s/g,'')}" class="btn btn-primary" style="flex:1;">☎ Gọi ngay</a>
+            <a href="https://www.google.com/maps/search/${encodeURIComponent(c.address)}" target="_blank" rel="noopener" class="btn btn-outline" style="flex:1;">📍 Chỉ đường</a>
+          </div>
+        </div>
+      </div>`;
+   })();
+  </script>
+</body>
+
+

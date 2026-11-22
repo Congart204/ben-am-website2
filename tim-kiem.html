@@ -1,0 +1,58 @@
+﻿<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Káº¿t quáº£ tÃ¬m kiáº¿m</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Nunito+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=7">
+<body data-page="">
+  <div id="site-header"></div>
+  <section class="section">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Trang chá»§</a> / Káº¿t quáº£ tÃ¬m kiáº¿m</div>
+      <h1 style="font-size:28px;">Káº¿t quáº£ tÃ¬m kiáº¿m cho "<span id="kw"></span>"</h1>
+      <div class="panel flex gap-12 mb-24">
+        <input type="text" id="searchInput" placeholder="TÃ¬m theo tÃªn thÃº, khu vá»±c, phÃ²ng khÃ¡m..." style="flex:1;">
+        <button class="btn btn-primary" id="searchBtn">TÃ¬m</button>
+      </div>
+      <div id="results"></div>
+    </div>
+  </section>
+  <div id="site-footer"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/data.js?v=7"></script>
+  <script src="js/main.js?v=7"></script>
+  <script>
+   (async () => {
+    await loadCoreData();
+    function doSearch(kw) {
+      document.getElementById("kw").textContent = kw || "";
+      if (!kw) { document.getElementById("results").innerHTML = ""; return; }
+      const lower = kw.toLowerCase();
+      const pets = PETS.filter(p => (p.name + p.area + p.species).toLowerCase().includes(lower));
+      const clinics = CLINICS.filter(c => (c.name + c.area).toLowerCase().includes(lower));
+      const total = pets.length + clinics.length;
+      const area = document.getElementById("results");
+      if (!total) {
+        area.innerHTML = `<div class="empty-state"><div class="icon">ðŸ”</div><h3>KhÃ´ng tÃ¬m tháº¥y káº¿t quáº£ nÃ o cho "${kw}"</h3><p class="muted">Thá»­ tá»« khÃ³a khÃ¡c nhÆ° tÃªn khu vá»±c, loÃ i thÃº hoáº·c tÃªn phÃ²ng khÃ¡m.</p></div>`;
+        return;
+      }
+      area.innerHTML = `
+        ${pets.length ? `<h3>ThÃº cÆ°ng (${pets.length})</h3><div class="grid grid-4 mb-24">${pets.map(p=>`
+          <div class="card"><div class="card-media"><img src="${p.img}" alt="${p.name}"></div>
+          <div class="card-body"><h3>${p.name}</h3><p class="muted" style="font-size:13px;">${p.species} Â· ${p.area}</p>
+          <a href="chi-tiet-thu.html?id=${p.id}" class="btn btn-outline btn-sm">Xem há»“ sÆ¡</a></div></div>`).join("")}</div>` : ""}
+        ${clinics.length ? `<h3>PhÃ²ng khÃ¡m (${clinics.length})</h3><div class="grid grid-3">${clinics.map(c=>`
+          <div class="card"><div class="card-body"><h3>${c.name}</h3><p class="muted" style="font-size:13px;">${c.area}</p>
+          <a href="chi-tiet-phong-kham.html?id=${c.id}" class="btn btn-outline btn-sm">Xem chi tiáº¿t</a></div></div>`).join("")}</div>` : ""}
+      `;
+    }
+    document.getElementById("searchBtn").addEventListener("click", () => doSearch(document.getElementById("searchInput").value.trim()));
+    const initial = qs("q") || "";
+    document.getElementById("searchInput").value = initial;
+    doSearch(initial);
+   })();
+  </script>
+</body>
+
+
+
